@@ -8,7 +8,7 @@ from django.views.generic import View, TemplateView, DetailView, CreateView, Lis
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from biblioteka_mixins.SluzbenikGroupRequiredMixin import SluzbenikGroupRequiredMixin
 from .forms import KnjigaCreateForm, ZaduzenjeCreateForm
-from korisnik.models import Knjiga, Zaduzenje, Korisnik
+from korisnik.models import Knjiga, Zaduzenje, Korisnik, Primerak
 from datetime import date
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -22,7 +22,20 @@ class CreateKnjigaView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, SuccessM
     model = Knjiga
     form_class = KnjigaCreateForm
     success_url = 'add-knjiga'
-    success_message = 'Uspesno dodata knjiga !'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        knjiga = self.object
+        broj_primeraka = int(self.request.POST['broj_primeraka'])
+        for x in range(0, broj_primeraka):
+            primerak = Primerak()
+            primerak.knjiga = knjiga
+            primerak.save()
+
+        messages.success(self.request, "USpesno dodata knjiga!")
+        return redirect(self.get_success_url())
+
+
 
 class DeleteKnjigaView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Knjiga
