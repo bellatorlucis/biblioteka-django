@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</ul>
+{% endif %}
+    <form method="post" action="" enctype="multipart/form-data">
+        {{ form }}
+        {% csrf_token %}
+        <button type="submit" >Dodaj</button>
+    </form>
+</body>
+</html>

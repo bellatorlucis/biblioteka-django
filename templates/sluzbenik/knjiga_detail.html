@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</ul>
+{% endif %}
+<body>
+<img src="{{ knjiga.slika.url }}" width="250">
+    {{ knjiga.autor }}
+    {{ knjiga.naziv }}
+<div>
+    <ul>
+       {% for z in zaduzenja %}
+          <li>{{ z.korisnik }}</li>
+           <li>{{ z.datun_iznajmljivanja }}</li>
+           <li><a href="{% url 'knjiga-razduzi' id=z.id knjiga_id=knjiga.id %}">Razduzi</a></li>
+
+       {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

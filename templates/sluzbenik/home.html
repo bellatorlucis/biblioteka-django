@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sluzbenik</title>
+</head>
+<body>
+<h1>SLUZBENIK POCETNA</h1>
+    <a href="{% url 'logout' %}">LOG OUT</a>
+    <a href="{% url 'add-knjiga' %}">Dodaj knjigu</a>
+    <a href="{% url 'add-zaduzenje' %}">Dodaj zaduzenje</a>
+    <a href="{% url 'knjiga-details' pk=7 %}">Knjiga sa slikom</a>
+    <a href="{% url 'korisnik-svi' %}">Svi korisnici</a>
+    <a href="{% url 'knjiga-sve' %}">Sve knjige</a>
+</body>
+</html>

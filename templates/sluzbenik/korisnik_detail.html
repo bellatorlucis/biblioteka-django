@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {{ korisnik.user.username }}
+    {{ korisnik.user.first_name }}
+    {{ korisnik.user.last_name }}
+    {% for z in zaduzenja %}
+       <p>{{ z.datum_iznajmljivanja }}</p> <a href="{% url 'knjiga-razduzi' id=z.id knjiga_id=z.primerak.knjiga.id %}">Razduzi</a>
+    {% endfor %}
+</body>
+</html>

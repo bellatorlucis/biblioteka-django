@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sve knjige</title>
+</head>
+<body>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% for k in knjige %}
+   {{ k.naziv }}{{ k.autor }} <a href="{%  url 'knjiga-delete' pk=k.id %}">Obrisi</a>
+{% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Svi korisnici</title>
+</head>
+<body>
+    {% for k in korisnici %}
+       {{ k.user.username }}{{ k.user.first_name }} <a href="{% url 'korisnik-detail' pk=k.id %}">Detalji</a>
+    {% endfor %}
+
+</body>
+</html>
