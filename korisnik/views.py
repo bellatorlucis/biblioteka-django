@@ -21,7 +21,7 @@ class KorisnikSveZaduzeneKnjigeView(LoginRequiredMixin, KorisnikGroupRequiredMix
 
     def get_queryset(self):
         korisnik = self.request.user.korisnik
-        zaduzenja =  Zaduzenje.objects.filter(korisnik=korisnik)
+        zaduzenja =  Zaduzenje.objects.filter(korisnik=korisnik).filter(datum_vracanja=None)
 
         return zaduzenja
 
@@ -65,3 +65,4 @@ class PretragaKnjigaView(LoginRequiredMixin, KorisnikGroupRequiredMixin, Success
 class KnjigaDetailView(LoginRequiredMixin,KorisnikGroupRequiredMixin,SuccessMessageMixin, DetailView):
     model = Knjiga
     context_object_name = 'knjiga'
+

@@ -17,6 +17,7 @@ urlpatterns=[
     url(r'^knjiga/delte/(?P<pk>[0-9]+)', sluzbenik_views.DeleteKnjigaView.as_view(), name='knjiga-delete'),
     url(r'^knjiga/sve', sluzbenik_views.KnjigeSveView.as_view(), name='knjiga-sve'),
     url(r'^korisnik/detail/(?P<pk>[0-9]+)', sluzbenik_views.KorisnikDetailView.as_view(), name='korisnik-detail'),
+    url(r'^korisnik/delete/(?P<pk>[0-9]+)', sluzbenik_views.KorisnikDeleteView.as_view(), name='korisnik-delete'),
     url(r'^korisnik/svi',sluzbenik_views.KorisniciSviView.as_view(), name='korisnik-svi' ),
 
 ]

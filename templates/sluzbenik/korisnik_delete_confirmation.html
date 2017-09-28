@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Potvrda brisanja</title>
+</head>
+<body>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</ul>
+{% endif %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Are you sure u want to delte korisnik ?</p>
+        <input type="submit" value="Obrisi">
+    </form>
+</body>
+</html>

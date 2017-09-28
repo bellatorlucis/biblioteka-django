@@ -12,6 +12,7 @@ from korisnik.models import Knjiga, Zaduzenje, Korisnik, Primerak
 from datetime import date
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.models import User
 
 
 class SluzbenikHomeView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, TemplateView):
@@ -40,7 +41,7 @@ class CreateKnjigaView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, SuccessM
 class DeleteKnjigaView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Knjiga
     success_url = reverse_lazy('knjiga-sve')
-    template_name ='sluzbenik/delete_confirmation.html'
+    template_name = 'sluzbenik/knjiga_delete_confirmation.html'
     success_message = 'Uspesno obrisan korisnik'
 
 class KnjigeSveView(LoginRequiredMixin,SluzbenikGroupRequiredMixin,ListView):
@@ -78,7 +79,7 @@ class KorisnikDetailView(LoginRequiredMixin, SluzbenikGroupRequiredMixin,DetailV
         context = super(KorisnikDetailView, self).get_context_data(**kwargs)
         korisnik_id = self.kwargs['pk']
         korisnik = Korisnik.objects.get(pk=korisnik_id)
-        zaduzenja = Zaduzenje.objects.filter(korisnik__user=korisnik.user)
+        zaduzenja = Zaduzenje.objects.filter(korisnik__user=korisnik.user).filter(datum_vracanja=None)
         context['zaduzenja'] = zaduzenja
         print(zaduzenja)
         return context
@@ -88,6 +89,12 @@ class KorisniciSviView(LoginRequiredMixin,SluzbenikGroupRequiredMixin,ListView):
     template_name = 'sluzbenik/svi_korisnici.html'
     context_object_name = 'korisnici'
 
+class KorisnikDeleteView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, DeleteView):
+    model = User
+    context_object_name = 'user'
+    template_name = 'sluzbenik/korisnik_delete_confirmation.html'
+    success_url = reverse_lazy('korisnik-svi')
+    success_message = 'Uspesno obrisan korisnik'
 
 
 class RazduziView(LoginRequiredMixin,SluzbenikGroupRequiredMixin,SuccessMessageMixin, View):

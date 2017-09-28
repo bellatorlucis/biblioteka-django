@@ -14,3 +14,6 @@ class ZaduzenjeCreateForm(forms.ModelForm):
     class Meta:
         model = Zaduzenje
         fields = '__all__'
+
+
+
