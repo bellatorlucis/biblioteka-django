@@ -18,6 +18,11 @@ from django.contrib.auth.models import User
 class SluzbenikHomeView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, TemplateView):
     template_name = 'sluzbenik/home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(SluzbenikHomeView, self).get_context_data(**kwargs)
+        context['korisnik'] = self.request.user.korisnik
+        return context
+
 class CreateKnjigaView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'sluzbenik/add_knjiga.html'
     model = Knjiga
@@ -42,7 +47,7 @@ class DeleteKnjigaView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, SuccessM
     model = Knjiga
     success_url = reverse_lazy('knjiga-sve')
     template_name = 'sluzbenik/knjiga_delete_confirmation.html'
-    success_message = 'Uspesno obrisan korisnik'
+    success_message = 'Uspesno obrisana knjiga'
 
 class KnjigeSveView(LoginRequiredMixin,SluzbenikGroupRequiredMixin,ListView):
     model = Knjiga
@@ -62,6 +67,17 @@ class KnjigaDetailView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, SuccessM
         context['zaduzenja'] = zaduzenja
         return context
 
+class PretragaKnjigaView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, SuccessMessageMixin, ListView):
+    template_name = 'sluzbenik/pretraga-knjiga.html'
+    context_object_name = 'knjige'
+    model = Knjiga
+
+    def get_queryset(self):
+        search_str = self.request.GET['search_string']
+        knjige= Knjiga.objects.filter(naziv__icontains=search_str)
+
+        return knjige
+
 class CreateZaduzenjeView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'sluzbenik/add_zaduzenje.html'
     model = Zaduzenje
@@ -79,7 +95,7 @@ class KorisnikDetailView(LoginRequiredMixin, SluzbenikGroupRequiredMixin,DetailV
         context = super(KorisnikDetailView, self).get_context_data(**kwargs)
         korisnik_id = self.kwargs['pk']
         korisnik = Korisnik.objects.get(pk=korisnik_id)
-        zaduzenja = Zaduzenje.objects.filter(korisnik__user=korisnik.user).filter(datum_vracanja=None)
+        zaduzenja = Zaduzenje.objects.filter(korisnik=korisnik).filter(datum_vracanja=None)
         context['zaduzenja'] = zaduzenja
         print(zaduzenja)
         return context
@@ -88,6 +104,12 @@ class KorisniciSviView(LoginRequiredMixin,SluzbenikGroupRequiredMixin,ListView):
     model = Korisnik
     template_name = 'sluzbenik/svi_korisnici.html'
     context_object_name = 'korisnici'
+
+    def get_queryset(self):
+        korisnici = Korisnik.objects.filter(user__groups__name='korisnik')
+
+        return korisnici
+
 
 class KorisnikDeleteView(LoginRequiredMixin, SluzbenikGroupRequiredMixin, DeleteView):
     model = User

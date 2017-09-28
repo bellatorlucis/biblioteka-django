@@ -1,10 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <meta charset="UTF-8">
     <title>Potvrda brisanja</title>
 </head>
 <body>
+<nav class="navbar">
+    <a href="#" class="toggle"><i class="fa fa-reorder"></i></a>
+    <a href="#" class="brand">Biblioteka Odiseja</a>
+    <div class="left">
+        <a class="link" href="{% url 'sluzbenik-home' %}">Home</a>
+        <div class="dropdown">
+             <a class="link">Knjiga</a>
+        <div class="dropdown-content">
+              <a href="{% url 'add-knjiga' %}">Dodaj novu knjigu</a>
+              <a href="{% url 'knjiga-sve' %}">Sve knjige u evidenciji</a>
+         </div>
+        </div>
+        <div class="dropdown">
+             <a class="link">Korisnik</a>
+        <div class="dropdown-content">
+              <a href="{% url 'korisnik-svi' %}">Svi korisnici</a>
+         </div>
+        </div>
+        <a class="link" href="{% url 'add-zaduzenje' %}">Dodaj zaduženje</a>
+    </div>
+    <div class="right">
+       <div class="search-bar">
+         <form method="get" action="{% url 'sluzbenik-pretraga-knjiga' %}">
+                 <input id="search_str_id" type="text" name="search_string" placeholder="Unesite željeni naziv knjige">
+                  <button class="btn" type="submit">Pretrazi</button>
+         </form>
+       </div>
+        <a href="{% url 'logout' %}" class="link">Logout</a>
+    </div>
+</nav>
+
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -12,10 +45,17 @@
     {% endfor %}
 </ul>
 {% endif %}
-    <form action="" method="post">
+<div class="content">
+    <div class="centre login">
+       <form action="" method="post">
         {% csrf_token %}
-        <p>Are you sure u want to delte knjiga ?</p>
-        <input type="submit" value="Obrisi">
+        <div class="naslov">
+            <h2 >Da li ste sigurni da želite obrisati knjigu ?</h2>
+        </div>
+        <input type="submit" class="button" value="Obrisi">
     </form>
+
+    </div>
+</div>
 </body>
 </html>

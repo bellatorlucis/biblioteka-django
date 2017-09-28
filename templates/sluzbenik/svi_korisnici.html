@@ -1,13 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {%load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <meta charset="UTF-8">
     <title>Svi korisnici</title>
 </head>
 <body>
-    {% for k in korisnici %}
-       {{ k.user.username }}{{ k.user.first_name }} <a href="{% url 'korisnik-detail' pk=k.id %}">Detalji</a>
-    {% endfor %}
+<nav class="navbar">
+    <a href="#" class="toggle"><i class="fa fa-reorder"></i></a>
+    <a href="#" class="brand">Biblioteka Odiseja</a>
+    <div class="left">
+        <a class="link" href="{% url 'sluzbenik-home' %}">Home</a>
+        <div class="dropdown">
+             <a class="link">Knjiga</a>
+        <div class="dropdown-content">
+              <a href="{% url 'add-knjiga' %}">Dodaj novu knjigu</a>
+              <a href="{% url 'knjiga-sve' %}">Sve knjige u evidenciji</a>
+         </div>
+        </div>
+        <div class="dropdown">
+             <a class="link">Korisnik</a>
+        <div class="dropdown-content">
+              <a href="{% url 'korisnik-svi' %}">Svi korisnici</a>
+         </div>
+        </div>
+        <a class="link" href="{% url 'add-zaduzenje' %}">Dodaj zaduženje</a>
+    </div>
+    <div class="right">
+       <div class="search-bar">
+         <form method="get" action="{% url 'sluzbenik-pretraga-knjiga' %}">
+                 <input id="search_str_id" type="text" name="search_string" placeholder="Unesite željeni naziv knjige">
+                  <button class="btn" type="submit">Pretrazi</button>
+         </form>
+       </div>
+        <a href="{% url 'logout' %}" class="link">Logout</a>
+    </div>
+</nav>
+<div class="content">
+     <div class="naslov">
+        <h1>Korisnici sistema</h1>
+    </div>
+     {% if korisnici is not None %}
+     <div class="table-content">
+         <table class="table-my">
+             <tr class="tr-no-color">
+                  <th class="th-my">Username</th>
+				<th class="th-my">Ime</th>
+				<th class="th-my">Prezime</th>
+				<th class="th-my">Adresa</th>
+                 <th class="th-my">E-mail</th>
+                  <th class="th-my">Datum rodjenja</th>
+                  <th class="th-my">Obriši</th>
+                 <th class="th-my">Zaduženja</th>
+			</tr>
+             {% for k in korisnici %}
+             <tr class="tr-color">
+                 <td class="td-my">
+                       {{ k.user.username }}
+                 </td>
+                 <td class="td-my">
+                       {{ k.user.first_name }}
+                 </td>
+                 <td class="td-my">
+                       {{ k.user.last_name }}
+                 </td>
+                 <td class="td-my">
+                       {{ k.adresa }}
+                 </td>
+                 <td class="td-my">
+                       {{ k.user.email }}
+                 </td>
+                 <td class="td-my">
+                      {{ k.datum_rodjenja }}
+                 </td>
+                 <td class="td-my">
+                    <a class="btn-small btn-small-danger" href="{%  url 'korisnik-delete' pk=k.user.id %}">Obrisi</a>
+                 </td>
+                <td>
+                    <a class="btn-small" href="{% url 'korisnik-detail' pk=k.id %}">Zaduženja</a>
+                </td>
+             </tr>
+             {% endfor %}
+         </table>
+
+     </div>
+     {% endif %}
+</div>
 
 </body>
 </html>

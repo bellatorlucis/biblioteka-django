@@ -1,18 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <meta charset="UTF-8">
     <title>Korisnik</title>
 </head>
 <body>
-<h1>KORISNIK POCETNA</h1>
-    <a href="{% url 'logout' %}">LOG OUT</a>
-    <a  href="{% url 'korisnik-sve-zaduzene-knjige' %}">Sve knjige zaduzene</a>
-    <a href="{% url 'korisnik-sve-knjige' %}">Sve knjige</a>
-    <form method="get" action="{% url 'korisnik-pretraga-knjiga' %}">
-        <label for="search_str_id">Unesite naziv knjige</label>
-        <input id="search_str_id" type="text" name="search_string">
-        <input type="submit" value="Pretrazi">
-    </form>
+ <nav class="navbar">
+    <a href="#" class="toggle"><i class="fa fa-reorder"></i></a>
+    <a href="#" class="brand">Biblioteka Odiseja</a>
+    <div class="left">
+        <a class="link" href="{% url 'korisnik-sve-knjige' %}">Knjige</a>
+        <a class="link" href="{% url 'korisnik-sve-zaduzene-knjige' %}">Zaduzenja</a>
+
+    </div>
+    <div class="right">
+       <div class="search-bar">
+         <form method="get" action="{% url 'korisnik-pretraga-knjiga' %}">
+                 <input id="search_str_id" type="text" name="search_string" placeholder="Unesite željeni naziv knjige">
+                  <button class="btn" type="submit">Pretrazi</button>
+         </form>
+       </div>
+        <a href="{% url 'logout' %}" class="link">Logout</a>
+    </div>
+ </nav>
+ <div class="content">
+    <div class="naslov">
+        <h1> Dobrodošli, {{ korisnik.user.username }}</h1>
+    </div>
+     {% if zaduzenja is not None %}
+     <div class="table-content">
+         <table class="table-my">
+             <tr class="tr-no-color">
+				<th class="th-my">Autor</th>
+				<th class="th-my">Naziv</th>
+				<th class="th-my">Datum zaduzenja</th>
+			</tr>
+             {% for z in zaduzenja %}
+                <tr class="tr-color">
+                    <td class="td-my">
+                        {{ z.primerak.knjiga.autor }}
+                    </td>
+                    <td class="td-my">
+                        {{ z.primerak.knjiga.naziv }}
+                    </td>
+                    <td class="td-my">
+                        {{ z.datun_iznajmljivanja }}
+                    </td>
+                </tr>
+
+             {% endfor %}
+         </table>
+
+     </div>
+     {% endif %}
+</div>
 </body>
 </html>

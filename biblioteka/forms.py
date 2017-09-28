@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 
 
 class SignUpForm(UserCreationForm):
-    datum_rodjenja = forms.DateField(help_text='Obavezno. Format: YYYY-MM-DD')
-    adresa = forms.CharField(help_text="Unesite vasu adresu")
+    datum_rodjenja = forms.DateField(help_text='Obavezno. Format: YYYY-MM-DD', label='Datum rodjenja :')
+    adresa = forms.CharField(help_text="Unesite vasu adresu", label="Adresa :")
 
     class Meta:
         model = User

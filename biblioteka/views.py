@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -37,6 +38,7 @@ class LoginView(TemplateView):
             else:
                 return HttpResponse("Inactive user.")
         else:
+            messages.error(request, "Pogresno ste uneli username ili password")
             return redirect(settings.LOGIN_URL)
 
 class LogOutView(View):
@@ -52,7 +54,7 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            group = Group.objects.get(group_name='korisnik')
+            group = Group.objects.get(name='korisnik')
             user = form.save()
             user.refresh_from_db()  # load the profile instance created by the signal
             user.korisnik.datum_rodjenja = form.cleaned_data.get('datum_rodjenja')
@@ -74,10 +76,10 @@ class SignUpView(TemplateView):
         context['form'] = SignUpForm()
         return context
 
-    def post(self):
-        form = SignUpForm(self.request.POST)
+    def post(self, request):
+        form = SignUpForm(request.POST)
         if form.is_valid():
-            group = Group.objects.get(group_name='korisnik')
+            group = Group.objects.get(name='korisnik')
             user = form.save()
             user.refresh_from_db()
             user.korisnik.datum_rodjenja = form.cleaned_data.get('datum_rodjenja')
@@ -85,7 +87,7 @@ class SignUpView(TemplateView):
             user.save()
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
-            login(self.request, user)
+            login(request, user)
             return redirect('login-success')
 
 

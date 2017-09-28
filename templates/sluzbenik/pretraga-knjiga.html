@@ -2,30 +2,16 @@
 <html lang="en">
 <head>
     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <meta charset="UTF-8">
-        <link rel="stylesheet" href="{% static 'css/main.css' %}" >
-    <title>Sve knjige</title>
+    <title>Pretraga</title>
 </head>
 <body>
 <nav class="navbar">
     <a href="#" class="toggle"><i class="fa fa-reorder"></i></a>
     <a href="#" class="brand">Biblioteka Odiseja</a>
     <div class="left">
-        <a class="link" href="{% url 'sluzbenik-home' %}">Home</a>
-        <div class="dropdown">
-             <a class="link">Knjiga</a>
-        <div class="dropdown-content">
-              <a href="{% url 'add-knjiga' %}">Dodaj novu knjigu</a>
-              <a href="{% url 'knjiga-sve' %}">Sve knjige u evidenciji</a>
-         </div>
-        </div>
-        <div class="dropdown">
-             <a class="link">Korisnik</a>
-        <div class="dropdown-content">
-              <a href="{% url 'korisnik-svi' %}">Svi korisnici</a>
-         </div>
-        </div>
-        <a class="link" href="{% url 'add-zaduzenje' %}">Dodaj zaduženje</a>
+        <a class="link" href="{% url 'korisnik-home' %}">Home</a>
     </div>
     <div class="right">
        <div class="search-bar">
@@ -36,7 +22,7 @@
        </div>
         <a href="{% url 'logout' %}" class="link">Logout</a>
     </div>
-</nav>
+ </nav>
 {% if messages %}
     {% for message in messages %}
     <div class="{{ message.tags }}">
@@ -46,7 +32,7 @@
 {% endif %}
 <div class="content">
     <div class="naslov">
-        <h1> Dobrodošli, {{ korisnik.user.username }}</h1>
+        <h1> Nadjene knjige : </h1>
     </div>
      {% if knjige is not None %}
      <div class="table-content">
@@ -77,7 +63,7 @@
 
      </div>
      {% endif %}
-</div>
 
+</div>
 </body>
 </html>

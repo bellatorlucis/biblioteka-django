@@ -16,6 +16,7 @@ urlpatterns=[
     url(r'^knjiga/razduzi/(?P<id>[0-9]+)/(?P<knjiga_id>[0-9]+)',sluzbenik_views.RazduziView.as_view(), name='knjiga-razduzi'),
     url(r'^knjiga/delte/(?P<pk>[0-9]+)', sluzbenik_views.DeleteKnjigaView.as_view(), name='knjiga-delete'),
     url(r'^knjiga/sve', sluzbenik_views.KnjigeSveView.as_view(), name='knjiga-sve'),
+    url(r'^knjiga/pretraga', sluzbenik_views.PretragaKnjigaView.as_view(), name='sluzbenik-pretraga-knjiga'),
     url(r'^korisnik/detail/(?P<pk>[0-9]+)', sluzbenik_views.KorisnikDetailView.as_view(), name='korisnik-detail'),
     url(r'^korisnik/delete/(?P<pk>[0-9]+)', sluzbenik_views.KorisnikDeleteView.as_view(), name='korisnik-delete'),
     url(r'^korisnik/svi',sluzbenik_views.KorisniciSviView.as_view(), name='korisnik-svi' ),

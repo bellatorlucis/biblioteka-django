@@ -7,8 +7,28 @@
     <title>Login</title>
 </head>
 <body>
-<h1>Login</h1>
-  <div>
+<nav class="navbar">
+    <a href="#" class="toggle"><i class=""></i></a>
+    <a href="#" class="brand">Biblioteka Odiseja</a>
+    <div class="left">
+      <a href="{% url 'biblioteka-index' %}" class="link">Home</a>
+
+    </div>
+    <div class="right">
+      <a href="{% url 'registration' %}" class="link">Register</a>
+        <a href="{% url 'login' %}" class="link">Login</a>
+    </div>
+</nav>
+<div class="content">
+    <div class="centre login">
+        {% if messages %}
+
+                  {% for message in messages %}
+                     <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                 {% endfor %}
+
+        {% endif %}
+            <h1>Login</h1>
             <form id="login" method="post"
                   action="{% url 'login' %}">
                 {% csrf_token %}
@@ -20,23 +40,17 @@
                     </tr>
                     <tr>
                         <td><label for="id_password">Password</label></td>
+                        {{ form.errors.username }}
                         <td><input id="id_password" name="password"
                                    type="password" class="form-control"></td>
                     </tr>
                 </table>
-                {% if form.errors %}
-                    <p>
-                        Your username and password didn't match.
-                        Please try again.
-                    </p>
-                {% endif %}
-
                 <input type="submit" value="Login"
                        class="btn btn-primary pull-right" />
                 <input type="hidden" name="next" value="{{ next }}" />
             </form>
 
     </div>
-
+</div>
 </body>
 </html>

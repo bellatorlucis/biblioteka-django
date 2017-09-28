@@ -14,6 +14,14 @@ from django.urls import reverse_lazy
 class HomePageKorisnik(LoginRequiredMixin,KorisnikGroupRequiredMixin, TemplateView):
     template_name = 'korisnik/home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(HomePageKorisnik, self).get_context_data(**kwargs)
+        context['korisnik'] = self.request.user.korisnik
+        korisnik = self.request.user.korisnik
+        zaduzenja = Zaduzenje.objects.filter(korisnik=korisnik).filter(datum_vracanja=None)
+        context['zaduzenja'] = zaduzenja
+        return context
+
 class KorisnikSveZaduzeneKnjigeView(LoginRequiredMixin, KorisnikGroupRequiredMixin, ListView):
     model = Zaduzenje
     context_object_name = 'zaduzenja'
@@ -51,14 +59,15 @@ class ZaduziKnjiguView(LoginRequiredMixin, KorisnikGroupRequiredMixin, View):
 
 class PretragaKnjigaView(LoginRequiredMixin, KorisnikGroupRequiredMixin, SuccessMessageMixin, ListView):
     template_name = 'korisnik/pretraga-knjige.html'
-    context_object_name = 'knjige'
-    model = Knjiga
+    context_object_name = 'primerci'
+    model = Primerak
 
     def get_queryset(self):
         search_str = self.request.GET['search_string']
-        knjige = Knjiga.objects.filter(naziv__icontains=search_str)
+        primerci = Primerak.objects.filter(knjiga__naziv__icontains=search_str).filter(zaduzenje__datum_vracanja=None)
 
-        return knjige
+
+        return primerci
 
 
 

@@ -1,15 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Sluzbenik</title>
 </head>
 <body>
-    {{ korisnik.user.username }}
-    {{ korisnik.user.first_name }}
-    {{ korisnik.user.last_name }}
-    {% for z in zaduzenja %}
-       <p>{{ z.datum_iznajmljivanja }}</p> <a href="{% url 'knjiga-razduzi' id=z.id knjiga_id=z.primerak.knjiga.id %}">Razduzi</a>
+<nav class="navbar">
+    <a href="#" class="toggle"><i class="fa fa-reorder"></i></a>
+    <a href="#" class="brand">Biblioteka Odiseja</a>
+    <div class="left">
+        <div class="dropdown">
+             <a class="link">Knjiga</a>
+        <div class="dropdown-content">
+              <a href="{% url 'add-knjiga' %}">Dodaj novu knjigu</a>
+              <a href="{% url 'knjiga-sve' %}">Sve knjige u evidenciji</a>
+         </div>
+        </div>
+        <div class="dropdown">
+             <a class="link">Korisnik</a>
+        <div class="dropdown-content">
+              <a href="{% url 'korisnik-svi' %}">Svi korisnici</a>
+         </div>
+        </div>
+        <a class="link" href="{% url 'add-zaduzenje' %}">Dodaj zaduženje</a>
+    </div>
+    <div class="right">
+       <div class="search-bar">
+         <form method="get" action="{% url 'sluzbenik-pretraga-knjiga' %}">
+                 <input id="search_str_id" type="text" name="search_string" placeholder="Unesite željeni naziv knjige">
+                  <button class="btn" type="submit">Pretrazi</button>
+         </form>
+       </div>
+        <a href="{% url 'logout' %}" class="link">Logout</a>
+    </div>
+ </nav>
+{% if messages %}
+    {% for message in messages %}
+    <div class="{{ message.tags }}">
+        {{ message }}
+    </div>
     {% endfor %}
+{% endif %}
+<div class="content">
+    <div class="naslov">
+        <h1> Zaduženja korisnika :  {{ korisnik.user.username }}</h1>
+    </div>
+     {% if zaduzenja is not None %}
+     <div class="table-content">
+         <table class="table-my">
+             <tr class="tr-no-color">
+				<th class="th-my">Autor</th>
+				<th class="th-my">Naziv</th>
+				<th class="th-my">Datum iznajmljivanja</th>
+                 <th class="th-my">Razduži</th>
+			</tr>
+             {% for z in zaduzenja %}
+             <tr class="tr-color">
+                 <td class="td-my">
+                       {{ z.primerak.knjiga.autor }}
+                 </td>
+                 <td class="td-my">
+                      {{ z.primerak.knjiga.naslov }}
+                 </td>
+                 <td class="td-my">
+                     {{ z.datun_iznajmljivanja }}
+                 </td>
+                 <td class="td-my">
+                    <a class="btn-small btn-small-danger" href="{%  url 'knjiga-razduzi' id=z.id knjiga_id=z.primerak.knjiga.id %}">Razduži</a>
+                 </td>
+             </tr>
+             {% endfor %}
+         </table>
+
+     </div>
+     {% endif %}
+</div>
+
 </body>
 </html>
